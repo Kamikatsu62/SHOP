@@ -24,10 +24,10 @@ public class DelSocorroShop {
 
             switch(select){
                 case 1:
-                    c.getCustomerI();
+                    c.getCustomerID();
                     break;
                 case 2: 
-                    p.getProductI();
+                    p.getProductID();
                 break;
                 case 3:
                     o.getOrderD();

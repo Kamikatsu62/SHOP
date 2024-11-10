@@ -101,6 +101,10 @@ public class Customer {
         config conf = new config();
         conf.deleteRecord(qry, id);
     }
+
+    void getCustomerID() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
         
     }
     

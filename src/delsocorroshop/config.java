@@ -21,9 +21,13 @@ public class config {
         return con;
     }
 
+    static Connection getConnection() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     // Add Record Method
     public void addRecord(String sql, Object... values) {
-        try (Connection conn = this.connectDB(); 
+        try (Connection conn = config.connectDB(); 
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             // Loop through the values and set them in the prepared statement dynamically
