@@ -4,7 +4,7 @@ package delsocorroshop;
 import java.util.Scanner;
 
 public class Customer {
-    public void getCustomerI(){
+    public void getCustomerID(){
         Scanner sc = new Scanner(System.in);
         String resp = null;
         do {
@@ -101,10 +101,5 @@ public class Customer {
         config conf = new config();
         conf.deleteRecord(qry, id);
     }
-
-    void getCustomerID() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-        
     }
     

@@ -17,7 +17,7 @@ public class Product {
 
             System.out.print("Enter Action: ");
             int action = sc.nextInt();
-            sc.nextLine(); // Clear the buffer
+            sc.nextLine();
 
             switch (action) {
                 case 1:
@@ -32,7 +32,10 @@ public class Product {
                 case 4:
                     deleteProduct();
                     break;
-                case 5:
+                    case 5:
+                    updateStock();
+                    break;
+                case 6:
                     System.out.println("Returning to main selection...");
                     return;
                 default:
@@ -72,7 +75,7 @@ public class Product {
     private void updateProduct() {
         System.out.print("Enter the ID to Update: ");
         int id = sc.nextInt();
-        sc.nextLine(); // Clear the buffer
+        sc.nextLine();
         System.out.print("Enter new Name: ");
         String newName = sc.nextLine();
         System.out.print("Enter new Type: ");
@@ -81,11 +84,9 @@ public class Product {
         int newStock = sc.nextInt();
         System.out.print("Enter new Price: ");
         int newPrice = sc.nextInt();
-
         String qry = "UPDATE Product SET Name = ?, Type = ?, Stock = ?, Price = ? WHERE p_id = ?";
         conf.updateRecord(qry, newName, newType, newStock, newPrice, id);
     }
-
     private void deleteProduct() {
         System.out.print("Enter the ID to Delete: ");
         int id = sc.nextInt();
@@ -93,10 +94,9 @@ public class Product {
         String qry = "DELETE FROM Product WHERE p_id = ?";
         conf.deleteRecord(qry, id);
     }
-
-    // Method to update stock after an order is placed
     public void updateStock(int productId, int quantity) {
         String qry = "UPDATE Product SET Stock = Stock - ? WHERE p_id = ?";
         conf.updateRecord(qry, quantity, productId);
     }
+
 }

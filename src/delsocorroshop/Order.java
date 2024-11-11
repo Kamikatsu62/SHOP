@@ -8,8 +8,8 @@ import java.sql.SQLException;
 import java.util.Scanner;
 
 public class Order {
-    private final Scanner sc = new Scanner(System.in);
-    private final config conf = new config();
+    Scanner sc = new Scanner(System.in);
+   config conf = new config();
 
     public void getOrderD() {
         String resp = null;
@@ -22,7 +22,7 @@ public class Order {
 
             System.out.print("Enter Action: ");
             int action = sc.nextInt();
-            sc.nextLine(); // Clear the buffer
+            sc.nextLine();
 
             switch (action) {
                 case 1:
@@ -51,7 +51,6 @@ public class Order {
         } while (resp.equalsIgnoreCase("Y"));
         System.out.println("Thank You!");
     }
-
     public void addOrder() {
         System.out.print("Enter Customer ID: ");
         int customerId = sc.nextInt();
@@ -89,7 +88,7 @@ public class Order {
         String query = "SELECT e_fname, e_lname FROM Customer WHERE e_id = ?";
         String[] customerData = null;
 
-        try (Connection conn = conf.connectDB(); // Assuming you have a method to get the connection
+        try (Connection conn = config.connectDB(); 
              PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setInt(1, customerId);
             ResultSet rs = pstmt.executeQuery();
@@ -102,7 +101,7 @@ public class Order {
         return customerData;
     }
     private String[] fetchProductname(int productId) {
-        String query = "SELECT p_Name FROM Product WHERE p_id = ?"; // Corrected SQL query
+        String query = "SELECT p_Name FROM Product WHERE p_id = ?"; 
         String[] productData = null;
         try (Connection conn = conf.connectDB();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
