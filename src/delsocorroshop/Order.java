@@ -9,16 +9,19 @@ import java.util.Scanner;
 
 public class Order {
     Scanner sc = new Scanner(System.in);
-   config conf = new config();
+    config conf = new config();
 
     public void getOrderD() {
         String resp = null;
         do {
-            System.out.println("1. ADD Order");
-            System.out.println("2. VIEW Orders");
-            System.out.println("3. UPDATE Order");
-            System.out.println("4. DELETE Order");
-            System.out.println("5. EXIT Order");
+            System.out.println("------ORDERS--------");
+            System.out.println("|  1. ADD Order    |");
+            System.out.println("|  2. VIEW Orders  |");
+            System.out.println("|  3. UPDATE Order |");
+            System.out.println("|  4. DELETE Order |");
+            System.out.println("|  5. GET Receipt  |");
+            System.out.println("|  6. EXIT Order   |");
+            System.out.println("--------------------");
 
             System.out.print("Enter Action: ");
             int action = sc.nextInt();
@@ -38,6 +41,9 @@ public class Order {
                     deleteOrder();
                     break;
                 case 5:
+                    getReceipt();
+                    break;
+                case 6:
                     System.out.println("Returning to main selection...");
                     return;
                 default:
@@ -51,6 +57,7 @@ public class Order {
         } while (resp.equalsIgnoreCase("Y"));
         System.out.println("Thank You!");
     }
+
     public void addOrder() {
         System.out.print("Enter Customer ID: ");
         int customerId = sc.nextInt();
@@ -61,6 +68,7 @@ public class Order {
         }
         String e_fname = customerData[0];
         String e_lname = customerData[1];
+        
         System.out.print("Enter Product ID: ");
         int productId = sc.nextInt();
         sc.nextLine();
@@ -84,6 +92,7 @@ public class Order {
         
         conf.addRecord(sql, customerId, e_fname, e_lname, productId, p_Name, quantity, orderDate);
     }
+
     private String[] fetchCustomerName(int customerId) {
         String query = "SELECT e_fname, e_lname FROM Customer WHERE e_id = ?";
         String[] customerData = null;
@@ -100,6 +109,7 @@ public class Order {
         }
         return customerData;
     }
+
     private String[] fetchProductname(int productId) {
         String query = "SELECT p_Name FROM Product WHERE p_id = ?"; 
         String[] productData = null;
@@ -115,6 +125,7 @@ public class Order {
         }
         return productData;
     }
+
     private int fetchProductStock(int productId) {
         String query = "SELECT Stock FROM Product WHERE p_id = ?";
         int stock = 0;
@@ -125,11 +136,12 @@ public class Order {
             if (rs.next()) {
                 stock = rs.getInt("Stock");
             }
-        } catch (SQLException e) {
-            System.out.println("Error fetching product stock: " + e.getMessage());
-        }
+        } catch (SQLException e){
+            System.out.println("Error fetching product stock: " + e.get Message: " + e.getMessage: "())
+                    }
         return stock;
     }
+
     private void viewOrders() {
         String qry = "SELECT o.order_id, o.customer_id, o.product_id, o.quantity, o.order_date, c.e_fname, c.e_lname, p.p_Name " +
                      "FROM Orders o " +
@@ -163,5 +175,12 @@ public class Order {
         String qry = "DELETE FROM Orders WHERE order_id = ?";
 
         conf.deleteRecord(qry, orderId);
+    }
+
+    private void getReceipt() {
+        System.out.print("Enter Order ID to get receipt: ");
+        int orderId = sc.nextInt();
+        Reciept receipt = new Reciept();
+        receipt.getReceipt(orderId);
     }
 }

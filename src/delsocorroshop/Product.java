@@ -9,15 +9,17 @@ public class Product {
     public void getProductID() {
         String resp = null;
         do {
-            System.out.println("1. ADD Product");
-            System.out.println("2. VIEW Product");
-            System.out.println("3. UPDATE Product");
-            System.out.println("4. DELETE Product");
-            System.out.println("5. EXIT Product");
+            System.out.println("--------PRODUCT--------");
+            System.out.println("| 1. ADD Product      |");
+            System.out.println("| 2. VIEW Product     |");
+            System.out.println("| 3. UPDATE Product   |");
+            System.out.println("| 4. DELETE Product   |");
+            System.out.println("| 5. EXIT Product     |");
+            System.out.println("----------------------");
 
             System.out.print("Enter Action: ");
             int action = sc.nextInt();
-            sc.nextLine();
+            sc.nextLine();    
 
             switch (action) {
                 case 1:
@@ -32,10 +34,7 @@ public class Product {
                 case 4:
                     deleteProduct();
                     break;
-                    case 5:
-                    updateStock();
-                    break;
-                case 6:
+                case 5:
                     System.out.println("Returning to main selection...");
                     return;
                 default:
@@ -50,6 +49,7 @@ public class Product {
         System.out.println("Thank You!");
     }
 
+    
     public void addProduct() {
         System.out.print("Product Name: ");
         String name = sc.nextLine();
@@ -63,7 +63,6 @@ public class Product {
         String sql = "INSERT INTO Product (p_Name, Type, Stock, Price) VALUES (?, ?, ?, ?)";
         conf.addRecord(sql, name, type, stock, price);
     }
-
     private void viewProduct() {
         String qry = "SELECT * FROM Product";
         String[] hdrs = {"ID", "Name", "Type", "Stock", "Price"};
@@ -71,7 +70,6 @@ public class Product {
 
         conf.viewRecords(qry, hdrs, clms);
     }
-
     private void updateProduct() {
         System.out.print("Enter the ID to Update: ");
         int id = sc.nextInt();
@@ -94,9 +92,10 @@ public class Product {
         String qry = "DELETE FROM Product WHERE p_id = ?";
         conf.deleteRecord(qry, id);
     }
+
+    
     public void updateStock(int productId, int quantity) {
         String qry = "UPDATE Product SET Stock = Stock - ? WHERE p_id = ?";
         conf.updateRecord(qry, quantity, productId);
     }
-
 }

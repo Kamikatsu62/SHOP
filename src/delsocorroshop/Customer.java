@@ -8,11 +8,13 @@ public class Customer {
         Scanner sc = new Scanner(System.in);
         String resp = null;
         do {
-            System.out.println("1. ADD");
-            System.out.println("2. VIEW");
-            System.out.println("3. UPDATE");
-            System.out.println("4. DELETE");
-            System.out.println("5. EXIT");
+            System.out.println("---CUSTOMER---");
+            System.out.println("| 1. ADD     |");
+            System.out.println("| 2. VIEW    |");
+            System.out.println("| 3. UPDATE  |");
+            System.out.println("| 4. DELETE  |");
+            System.out.println("| 5. EXIT    |");
+            System.out.println("--------------");
 
             System.out.print("Enter Action: ");
             int action = sc.nextInt();

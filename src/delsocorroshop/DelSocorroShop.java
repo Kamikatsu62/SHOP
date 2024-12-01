@@ -8,6 +8,7 @@ public class DelSocorroShop {
         Customer c = new Customer();
         Product p = new Product();
         Order o = new Order();
+        Reciept rc = new Reciept();
         
         String transaction;
         
@@ -15,11 +16,13 @@ public class DelSocorroShop {
         
         do{
                            
-                            
-                             System.out.println("1. Customer Info");
-                             System.out.println("2. Product Info");  
-                             System.out.println("3. Order Details");
-                             System.out.print("Enter selection:");
+                             System.out.println("----------------------");
+                             System.out.println("| 1. Customer Info |");
+                             System.out.println("| 2. Product Info |");  
+                             System.out.println("| 3. Order Details |");
+                             System.out.println("----------------------");
+                             System.out.print(" Enter selection:");
+                             
             int select = sc.nextInt();
 
             switch(select){
@@ -32,6 +35,8 @@ public class DelSocorroShop {
                 case 3:
                     o.getOrderD();
                     break;
+              
+         
                 default: System.out.println("Invalid choice.");
             }
             System.out.print("Make another transaction? (y/n): ");
@@ -39,4 +44,8 @@ public class DelSocorroShop {
         } while(transaction.contains("y"));
         
     }
+
+  
+
+    
 }
