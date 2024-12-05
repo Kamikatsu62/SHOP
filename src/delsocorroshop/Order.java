@@ -1,6 +1,5 @@
 package delsocorroshop;
 
-import java.sql.Date;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,7 +11,7 @@ public class Order {
     config conf = new config();
 
     public void getOrderD() {
-        String resp = null;
+        String resp;
         do {
             System.out.println("------ORDERS--------");
             System.out.println("|  1. ADD Order    |");
@@ -48,7 +47,6 @@ public class Order {
                     return;
                 default:
                     System.out.println("Invalid choice. Please try again.");
-                    continue;
             }
 
             System.out.print("Continue? Y/N: ");
@@ -66,9 +64,7 @@ public class Order {
             System.out.println("Customer not found!");
             return;
         }
-        String e_fname = customerData[0];
-        String e_lname = customerData[1];
-        
+
         System.out.print("Enter Product ID: ");
         int productId = sc.nextInt();
         sc.nextLine();
@@ -77,7 +73,6 @@ public class Order {
             System.out.println("Product not found!");
             return;
         }
-        String p_Name = productName[0];
 
         System.out.print("Enter Quantity: ");
         int quantity = sc.nextInt();
@@ -86,15 +81,19 @@ public class Order {
             System.out.println("Insufficient stock! Available stock: " + availableStock);
             return; 
         }
-        Date orderDate = new Date(System.currentTimeMillis());
 
-        String sql = "INSERT INTO Orders (customer_id, e_fname, e_lname, product_id, p_Name, quantity, order_date) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        String sql = "INSERT INTO Orders (customer_id, c_fname, c_lname, product_id, p_name ,quantity) VALUES (?, ?, ?, ?, ?, ?)";
         
-        conf.addRecord(sql, customerId, e_fname, e_lname, productId, p_Name, quantity, orderDate);
+
+        conf.addRecord(sql, customerId, customerData[0], customerData[1], productId, productName[0], quantity);
+        
+        Product product = new Product();
+        product.updateStock(productId, quantity); 
     }
 
     private String[] fetchCustomerName(int customerId) {
-        String query = "SELECT e_fname, e_lname FROM Customer WHERE e_id = ?";
+        String query = "SELECT c_fname, c_lname FROM Customer WHERE c_id = ?";
         String[] customerData = null;
 
         try (Connection conn = config.connectDB(); 
@@ -102,7 +101,7 @@ public class Order {
             pstmt.setInt(1, customerId);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
-                customerData = new String[]{rs.getString("e_fname"), rs.getString("e_lname")};
+                customerData = new String[]{rs.getString("c_fname"), rs.getString("c_lname")};
             }
         } catch (SQLException e) {
             System.out.println("Error fetching customer name: " + e.getMessage());
@@ -117,7 +116,7 @@ public class Order {
              PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setInt(1, productId);
             ResultSet rs = pstmt.executeQuery();
-            if (rs.next()) {
+            if ( rs.next()) {
                 productData = new String[]{rs.getString("p_Name")};
             }
         } catch (SQLException e) {
@@ -127,28 +126,28 @@ public class Order {
     }
 
     private int fetchProductStock(int productId) {
-        String query = "SELECT Stock FROM Product WHERE p_id = ?";
+        String query = "SELECT Astock FROM Product WHERE p_id = ?";
         int stock = 0;
         try (Connection conn = conf.connectDB();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setInt(1, productId);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
-                stock = rs.getInt("Stock");
+                stock = rs.getInt("Astock");
             }
-        } catch (SQLException e){
-            System.out.println("Error fetching product stock: " + e.get Message: " + e.getMessage: "())
-                    }
+        } catch (SQLException e) {
+            System.out.println("Error fetching product stock: " + e.getMessage());
+        }
         return stock;
     }
 
     private void viewOrders() {
-        String qry = "SELECT o.order_id, o.customer_id, o.product_id, o.quantity, o.order_date, c.e_fname, c.e_lname, p.p_Name " +
+        String qry = "SELECT o.order_id, o.customer_id, o.product_id, o.quantity, o.order_date, c.c_fname, c.c_lname, p.p_Name " +
                      "FROM Orders o " +
-                     "JOIN Customer c ON o.customer_id = c.e_id " +
+                     "JOIN Customer c ON o.customer_id = c.c_id " +
                      "JOIN Product p ON o.product_id = p.p_id";
         String[] hdrs = {"Order ID", "Customer ID", "Product ID", "Quantity", "Order Date", "Customer First Name", "Customer Last Name", "Product Name"};
-        String[] clms = {"order_id", "customer_id", "product_id", "quantity", "order_date", "e_fname", "e_lname", "p_Name"};
+        String[] clms = {"order_id", "customer_id", "product_id", "quantity", "order_date", "c_fname", "c_lname", "p_Name"};
         
         conf.viewRecords(qry, hdrs, clms);
     }

@@ -60,7 +60,7 @@ public class Customer {
         System.out.print("Customer Status: ");
         String status = sc.nextLine();
 
-        String sql = "INSERT INTO Customer (e_fname, e_lname, e_email, e_status) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO Customer (c_fname, c_lname, c_email, c_status) VALUES (?, ?, ?, ?)";
 
         conf.addRecord(sql, fname, lname, email, status);
     }
@@ -68,7 +68,7 @@ public class Customer {
     private void viewCustomer() {
         String qry = "SELECT * FROM Customer";
         String[] hdrs = {"ID", "First Name", "Last Name", "Email", "Status"};
-        String[] clms = {"e_id", "e_fname", "e_lname", "e_email", "e_status"};
+        String[] clms = {"c_id", "c_fname", "c_lname", "c_email", "c_status"};
 
         config conf = new config();
         conf.viewRecords(qry, hdrs, clms);
@@ -87,7 +87,7 @@ public class Customer {
         System.out.print("Enter new Status: ");
         String nstatus = sc.next();
 
-        String qry = "UPDATE Customer SET e_fname = ?, e_lname = ?, e_email = ?, e_status = ? WHERE e_id = ?";
+        String qry = "UPDATE Customer SET c_fname = ?, c_lname = ?, c_email = ?, c_status = ? WHERE c_id = ?";
 
         config conf = new config();
         conf.updateRecord(qry, nfname, nlname, nemail, nstatus, id);
@@ -98,7 +98,7 @@ public class Customer {
         System.out.print("Enter the ID to Delete: ");
         int id = sc.nextInt();
 
-        String qry = "DELETE FROM Customer WHERE e_id = ?";
+        String qry = "DELETE FROM Customer WHERE c_id = ?";
 
         config conf = new config();
         conf.deleteRecord(qry, id);

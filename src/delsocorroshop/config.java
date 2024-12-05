@@ -14,9 +14,9 @@ public class config {
         try {
             Class.forName("org.sqlite.JDBC"); // Load the SQLite JDBC driver
             con = DriverManager.getConnection("jdbc:sqlite:Shop.db"); // Establish connection
-            System.out.println("Connection Successful");
-        } catch (Exception e) {
-            System.out.println("Connection Failed: " + e);
+            System.out.println("");
+        } catch (ClassNotFoundException | SQLException e) {
+            System.out.println("" + e);
         }
         return con;
     }
@@ -68,17 +68,17 @@ public class config {
             return;
         }
 
-        try (Connection conn = this.connectDB(); 
+        try (Connection conn = config.connectDB(); 
              PreparedStatement pstmt = conn.prepareStatement(sqlQuery);
              ResultSet rs = pstmt.executeQuery()) {
 
             // Print the headers dynamically
             StringBuilder headerLine = new StringBuilder();
-            headerLine.append("--------------------------------------------------------------------------------------------------------------------\n| ");
+            headerLine.append("\n--------------------------------------------------------------------------------------------------------------------------------------------------------------------\n|");
             for (String header : columnHeaders) {
                 headerLine.append(String.format("%-20s | ", header)); 
             }
-            headerLine.append("\n-------------------------------------------------------------------------------------------------------------------");
+            headerLine.append("\n--------------------------------------------------------------------------------------------------------------------------------------------------------------------\n|");
 
             System.out.println(headerLine.toString());
 
@@ -91,7 +91,7 @@ public class config {
                 }
                 System.out.println(row.toString());
             }
-            System.out.println("-------------------------------------------------------------------------------------------------------------------");
+            System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------------");
 
         } catch (SQLException e) {
             System.out.println("Error retrieving records: " + e.getMessage());

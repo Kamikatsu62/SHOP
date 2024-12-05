@@ -21,9 +21,9 @@ public class Reciept {
     }
 
     private void fetchOrderDetails(int orderId) {
-        String query = "SELECT c.e_fname, c.e_lname, p.p_Name, o.quantity, p.price " +
+        String query = "SELECT c.c_fname, c.c_lname, p.p_Name, o.quantity, p.price " +
                        "FROM Orders o " +
-                       "JOIN Customer c ON o.customer_id = c.e_id " +
+                       "JOIN Customer c ON o.customer_id = c.c_id " +
                        "JOIN Product p ON o.product_id = p.p_id " +
                        "WHERE o.order_id = ?";
         
@@ -32,7 +32,7 @@ public class Reciept {
             pstmt.setInt(1, orderId);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
-            this.customerName = rs.getString("e_fname") + " " + rs.getString("e_lname");
+            this.customerName = rs.getString("c_fname") + " " + rs.getString("c_lname");
             this.productName = rs.getString("p_Name");
             this.quantity = rs.getInt("quantity");
             this.price = rs.getInt("price");
@@ -41,7 +41,7 @@ public class Reciept {
                 System.out.println("Order ID not found.");
             }
         } catch (SQLException e) {
-            System.out.println("Error fetching order details: " + e.getMessage());
+            System.out.println("" + e.getMessage());
         }
     }
 

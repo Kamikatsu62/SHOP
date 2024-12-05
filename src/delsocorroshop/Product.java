@@ -5,9 +5,9 @@ import java.util.Scanner;
 public class Product {
     private final Scanner sc = new Scanner(System.in);
     private final config conf = new config();
-
+    
     public void getProductID() {
-        String resp = null;
+        String resp;
         do {
             System.out.println("--------PRODUCT--------");
             System.out.println("| 1. ADD Product      |");
@@ -18,8 +18,18 @@ public class Product {
             System.out.println("----------------------");
 
             System.out.print("Enter Action: ");
-            int action = sc.nextInt();
-            sc.nextLine();    
+            int action;
+           
+            while (true) {
+                try {
+                    action = sc.nextInt();
+                    sc.nextLine(); 
+                    break; 
+                } catch (Exception e) {
+                    System.out.println("Invalid input. Please enter a number (1-5).");
+                    sc.next();
+                }
+            }
 
             switch (action) {
                 case 1:
@@ -39,7 +49,6 @@ public class Product {
                     return;
                 default:
                     System.out.println("Invalid choice. Please try again.");
-                    continue;
             }
 
             System.out.print("Continue? Y/N: ");
@@ -49,42 +58,82 @@ public class Product {
         System.out.println("Thank You!");
     }
 
-    
     public void addProduct() {
         System.out.print("Product Name: ");
         String name = sc.nextLine();
-        System.out.print("Product Type (solid/liquid): ");
-        String type = sc.nextLine();
-        System.out.print("Product Stock: ");
-        int stock = sc.nextInt();
-        System.out.print("Product Price: ");
-        int price = sc.nextInt();
+        
+        int allTimeStock;
+        while (true) {
+            try {
+                System.out.print("Product All Time Stock: ");
+                allTimeStock = sc.nextInt();
+                break; 
+            } catch (Exception e) {
+                System.out.println("Invalid input. Please enter a valid number.");
+                sc.next(); 
+            }
+        }
 
-        String sql = "INSERT INTO Product (p_Name, Type, Stock, Price) VALUES (?, ?, ?, ?)";
-        conf.addRecord(sql, name, type, stock, price);
+        int price;
+        while (true) {
+            try {
+                System.out.print("Product Price: ");
+                price = sc.nextInt();
+                break; 
+            } catch (Exception e) {
+                System.out.println("Invalid input. Please enter a valid number.");
+                sc.next(); 
+            }
+        }
+
+        String sql = "INSERT INTO Product (p_Name, Astock, CStock, Price) VALUES (?, ?, ?, ?)";
+        conf.addRecord(sql, name, allTimeStock, allTimeStock, price);
     }
+
     private void viewProduct() {
-        String qry = "SELECT * FROM Product";
-        String[] hdrs = {"ID", "Name", "Type", "Stock", "Price"};
-        String[] clms = {"p_id", "p_Name", "Type", "Stock", "Price"};
+        String qry = "SELECT p_id, p_Name, Astock, CStock, Price FROM Product";
+        String[] hdrs = {"ID", "Name", "All Time Stock", "Current Stock", "Price"};
+        String[] clms = {"p_id", "p_Name", "Astock", "CStock", "Price"};
 
         conf.viewRecords(qry, hdrs, clms);
     }
+
     private void updateProduct() {
         System.out.print("Enter the ID to Update: ");
         int id = sc.nextInt();
         sc.nextLine();
+        
         System.out.print("Enter new Name: ");
         String newName = sc.nextLine();
-        System.out.print("Enter new Type: ");
-        String newType = sc.nextLine();
-        System.out.print("Enter new Stock: ");
-        int newStock = sc.nextInt();
-        System.out.print("Enter new Price: ");
-        int newPrice = sc.nextInt();
-        String qry = "UPDATE Product SET Name = ?, Type = ?, Stock = ?, Price = ? WHERE p_id = ?";
-        conf.updateRecord(qry, newName, newType, newStock, newPrice, id);
+        
+        int newAllTimeStock;
+        while (true) {
+            try {
+                System.out.print("Enter new All Time Stock: ");
+                newAllTimeStock = sc.nextInt();
+                break; 
+            } catch (Exception e) {
+                System .out.println("Invalid input. Please enter a valid number.");
+                sc.next(); 
+            }
+        }
+
+        int newPrice;
+        while (true) {
+            try {
+                System.out.print("Enter new Price: ");
+                newPrice = sc.nextInt();
+                break; 
+            } catch (Exception e) {
+                System.out.println("Invalid input. Please enter a valid number.");
+                sc.next(); 
+            }
+        }
+
+        String qry = "UPDATE Product SET p_Name = ?, Astock = ?, CStock = ?, Price = ? WHERE p_id = ?";
+        conf.updateRecord(qry, newName, newAllTimeStock, newAllTimeStock, newPrice, id);
     }
+
     private void deleteProduct() {
         System.out.print("Enter the ID to Delete: ");
         int id = sc.nextInt();
@@ -93,9 +142,8 @@ public class Product {
         conf.deleteRecord(qry, id);
     }
 
-    
     public void updateStock(int productId, int quantity) {
-        String qry = "UPDATE Product SET Stock = Stock - ? WHERE p_id = ?";
+        String qry = "UPDATE Product SET CStock = CStock - ? WHERE p_id = ?";
         conf.updateRecord(qry, quantity, productId);
     }
 }
